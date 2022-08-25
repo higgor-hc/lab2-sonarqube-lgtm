@@ -3,12 +3,20 @@ const app = express();
 const port = 3000;
 const db = require("./db");
 
+// set up rate limiter: maximum of five requests per minute
+var RateLimit = require('express-rate-limit');
+var limiter = new RateLimit({
+  windowMs: 1*60*1000, // 1 minute
+  max: 5
+});
+
 app.get('/', (req, res) => {
   res.status(200).json({ message: 'Hello World!'})
 });
 
-app.get('/auth', async (req, res, next) => {
-  const users = await db.selectUserByLogin(req.query.user, req.query.password);
+app.use(limiter);
+app.post('/auth', async (req, res, next) => {
+  const users = await db.selectUserByLogin(req.body.user, req.body.password);
   if(users.length){
     res.send("Login Success");
   }else{
