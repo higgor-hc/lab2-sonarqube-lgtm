@@ -1,6 +1,14 @@
 const express = require('express');
 const app = express();
 const port = 3000;
+var crypto = require('crypto'),
+password = getPassword();
+
+function encrypt(text){
+  var cipher = crypto.createCipher('aes-256-ctr', password);
+  return cipher.update(text, 'utf8', 'hex') + cipher.final('hex');
+}
+
 const db = require("./db");
 
 // set up rate limiter: maximum of five requests per minute
@@ -16,7 +24,7 @@ app.get('/', (req, res) => {
 
 app.use(limiter);
 app.post('/auth', async (req, res, next) => {
-  const users = await db.selectUserByLogin(req.body.user, req.body.password);
+  const users = await db.selectUserByLogin(req.body.user, encrypt(req.body.password));
   if(users.length){
     res.send("Login Success");
   }else{

@@ -24,6 +24,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "crypto": "^1.0.1",
     "express": "^4.17.1",
     "jest": "^27.3.0",
     "jest-jasmine2": "^27.3.0",
