@@ -1,6 +1,6 @@
 {
   "name": "lab2-sonarqube-lgtm",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "src/app.js",
   "scripts": {
@@ -26,6 +26,7 @@
   "dependencies": {
     "crypto": "^1.0.1",
     "express": "^4.17.1",
+    "express-rate-limit": "^6.5.2",
     "jest": "^27.3.0",
     "jest-jasmine2": "^27.3.0",
     "mysql2": "^2.2.5"

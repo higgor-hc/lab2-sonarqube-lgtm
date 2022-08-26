@@ -1,19 +1,18 @@
 const express = require('express');
 const app = express();
 const port = 3000;
-var crypto = require('crypto'),
-password = getPassword();
+let crypto = require('crypto');
+let RateLimitInfo = require('express-rate-limit');
+let salt = 'salt';
 
 function encrypt(text){
-  var cipher = crypto.createCipher('aes-256-ctr', password);
+  let cipher = crypto.createCipheriv('aes-256-ctr', salt);
   return cipher.update(text, 'utf8', 'hex') + cipher.final('hex');
 }
 
 const db = require("./db");
 
-// set up rate limiter: maximum of five requests per minute
-var RateLimit = require('express-rate-limit');
-var limiter = new RateLimit({
+let limiter = RateLimitInfo({
   windowMs: 1*60*1000, // 1 minute
   max: 5
 });
